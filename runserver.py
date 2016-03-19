@@ -11,7 +11,7 @@ APP = Flask(__name__, template_folder="project/client/templates",
 def main():
     """Return main template"""
 
-    return "Test"
+    return render_template("main.html")
 
 
 if __name__ == "__main__":
