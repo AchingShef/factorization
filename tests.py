@@ -2,6 +2,7 @@
 
 import runserver
 import unittest
+import json
 
 
 class FactorisationTestCase(unittest.TestCase):
@@ -13,17 +14,34 @@ class FactorisationTestCase(unittest.TestCase):
     def tearDown(self):
         pass
 
-    def test_get_factorization(self):
-        """Test /get_factorization/ method"""
+    def get_factorization(self, number):
+        """Метод юнит-теста"""
 
-        response = self.app.post("/get_factorization/", dict(number=34839583))
-        assert "500 INTERNAL SERVER ERROR" in response.status
-        response = self.app.post("/get_factorization/", dict(number=u"abc"))
-        assert "500 INTERNAL SERVER ERROR" in response.status
-        response = self.app.post("/get_factorization/", dict(number=1))
-        assert "500 INTERNAL SERVER ERROR" in response.status
-        response = self.app.post("/get_factorization/", dict(number=2))
-        assert "500 INTERNAL SERVER ERROR" in response.status
+        response = self.app.post(
+            "/get_factorization/", data=dict(number=number))
+
+        data = json.loads(response.data)
+
+        return data
+
+    def test_get_factorization(self):
+        """Тест метода /get_factorization/"""
+
+        data = self.get_factorization(34839583)
+
+        assert len(data["result"]) > 1
+
+        data = self.get_factorization(u"abc")
+
+        assert u"Введите натуральное число" in data["result"]
+
+        data = self.get_factorization(1)
+
+        assert u"Введите натуральное число больше 1" in data["result"]
+
+        data = self.get_factorization(5)
+
+        assert len(data["result"]) == 1
 
 if __name__ == "__main__":
     unittest.main()

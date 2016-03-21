@@ -22,13 +22,13 @@ def factor(value):
 
     while num * num <= value:
         if value % num == 0:
-            result.append(str(num))
+            result.append(num)
 
             value //= num
         else:
             num += 1
 
-    result.append(str(value))
+    result.append(value)
 
     return result
 
@@ -36,20 +36,19 @@ def factor(value):
 @APP.route("/get_factorization/", methods=["POST"])
 def factorization():
     """Возвращает результат в зависимости от переданного значения"""
-
-    # получаем значение из формы
+    # получение значения из формы
 
     number = request.form.get("number")
     status = 200
 
-    # пытаемся преобразовать значение к целому
+    # преобразовывание значения к целому
 
     try:
         number = int(number)
     except Exception, exc:
         number = None
 
-    # в зависимости от условия создаем ответ
+    # в зависимости от условия создание ответа
 
     if number is None:
         data = {"result": u"Введите натуральное число"}

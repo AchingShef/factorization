@@ -1,15 +1,15 @@
-function showResult(response, number) {
+function showResult(response, value) {
     "use strict";
-    // создаем абзац, в котором будет содержаться ответ
-    // и начинаем формировать ответ
+    // создание абзаца, в котором будет содержаться ответ
+    // начало формирования ответа
 
     var div = document.getElementsByClassName("response")[0],
         p = document.createElement("p"),
-        result = number,
+        result = value,
         len,
         i;
 
-    // устанавливаем css класс элемента DOM
+    // установка css-класса абзацу
 
     p.className = "response";
 
@@ -23,11 +23,13 @@ function showResult(response, number) {
         if (len > 1) {
             result += " = ";
 
-            // выводим элементы массива
+            // вывод всех элементов массива, кроме последнего
 
             for (i = 0; i < len - 1; i += 1) {
                 result += response[i] + " * ";
             }
+
+            // вывод последнего элемента массива
 
             result += response[len - 1];
         } else {
@@ -39,7 +41,7 @@ function showResult(response, number) {
         }
     } else {
 
-        // иначе просто выводим результат(ошибку)
+        // иначе просто вывод результата(ошибки)
 
         result += " - " + response;
         p.className += " error";
@@ -47,66 +49,71 @@ function showResult(response, number) {
 
     p.innerHTML = result;
 
-    // добавляем абзац в div ответа
+    // вставка абзаца в div ответа
 
     div.appendChild(p);
 }
 
-function sendValue(numberField) {
+function sendValue(field) {
     "use strict";
-    // cоздаём новый объект XMLHttpRequest и набор данных
+    // cоздание нового объекта XMLHttpRequest и набор данных
 
     var xhr = new XMLHttpRequest(),
-        formData = new FormData(),
-        value = numberField.value;
+        params,
+        value;
 
-    // устанавливаем тип возвращаемого значения запроса
+    if (xhr !== undefined) {
+        value = field.value;
+        params = "number=" + value;
 
-    xhr.responseType = "json";
+        // устанавливаем тип возвращаемого значения запроса
 
-    // добавляем ключ и значение в набор
+        xhr.responseType = "json";
 
-    formData.append("number", value);
+        // событие на успешную загрузку
 
-    // событие на успешную загрузку
+        xhr.onload = function (e) {
+            showResult(e.target.response.result, value);
+        };
 
-    xhr.onload = function (e) {
-        showResult(e.target.response.result, value);
-    };
+        // событие на ошибку
 
-    // событие на ошибку
+        xhr.onerror = function (e) {
+            // выводим ошибку
 
-    xhr.onerror = function (e) {
-        // выводим ошибку
+            alert(e.target.response);
+        };
 
-        alert(e.target.response);
-    };
+        // открываем соединение с /get_factorization/, асинхронный post запрос
 
-    // открываем соединение с /get_factorization/, асинхронный post запрос
+        xhr.open("POST", "/get_factorization/", true);
 
-    xhr.open("POST", "/get_factorization/", true);
+        // устанавливаем заголовки
 
-    // отправляем данные
+        xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
 
-    xhr.send(formData);
+        // отправляем данные
+
+        xhr.send(params);
+    }
 }
 
 function setEvents() {
     "use strict";
     // получаем елементы DOM
 
-    var numberField = document.getElementsByName("number")[0],
+    var field = document.getElementsByName("number")[0],
         submitBtn = document.getElementsByName("submit")[0];
 
     // устанавливаем события для елементов DOM
 
     submitBtn.onclick = function (e) {
-        sendValue(numberField);
+        sendValue(field);
     };
 
-    numberField.onkeypress = function (e) {
+    field.onkeypress = function (e) {
         if (e.keyCode === 13) {
-            sendValue(numberField);
+            sendValue(field);
         }
     };
 }
