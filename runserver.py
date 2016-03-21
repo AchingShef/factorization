@@ -9,13 +9,13 @@ APP = Flask(__name__, template_folder="project/client/templates",
 
 @APP.route("/")
 def main():
-    """Return main template"""
+    """Возвращает главный шаблон"""
 
     return render_template("main.html")
 
 
 def factor(value):
-    """Factorization natural number"""
+    """Возвращает простые множители числа"""
 
     result = []
     num = 2
@@ -35,7 +35,7 @@ def factor(value):
 
 @APP.route("/get_factorization/", methods=["POST"])
 def factorization():
-    """Return factorization from number"""
+    """Возвращает результат в зависимости от переданного значения"""
 
     # получаем значение из формы
 
@@ -49,14 +49,12 @@ def factorization():
     except Exception, exc:
         number = None
 
-    # в зависимости от условия создаем сообщение об ошибке
+    # в зависимости от условия создаем ответ
 
     if number is None:
-        msg = u"Введите натуральное число"
-        data = {"msg": msg}
+        data = {"result": u"Введите натуральное число"}
     elif number < 2:
-        msg = u"Введите натуральное число больше 1"
-        data = {"msg": msg}
+        data = {"result": u"Введите натуральное число больше 1"}
     else:
         status = 200
         result = factor(number)

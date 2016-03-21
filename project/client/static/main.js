@@ -64,7 +64,7 @@ function sendValue(numberField) {
         } else {
             // запрос выполнился с ошибкой
 
-            alert(e.target.response.msg);
+            alert(e.target.response.result);
         }
     };
 
