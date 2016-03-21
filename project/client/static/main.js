@@ -1,32 +1,47 @@
 function showResult(response, number) {
     "use strict";
-
     // создаем абзац, в котором будет содержаться ответ
     // и начинаем формировать ответ
 
     var div = document.getElementsByClassName("response")[0],
         p = document.createElement("p"),
-        result = number + " = ",
-        len = response.length,
+        result = number,
+        len,
         i;
 
-    // устанавливаем css класс элемента dom
+    // устанавливаем css класс элемента DOM
 
     p.className = "response";
 
-    // если это составное число с множителями
+    // если ответ - массив множителей
 
-    if (len > 1) {
-        for (i = 0; i < len - 1; i += 1) {
-            result += response[i] + " * ";
+    if (Array.isArray(response) === true) {
+        len = response.length;
+
+        // и несколько элементов в массиве
+
+        if (len > 1) {
+            result += " = ";
+
+            // выводим элементы массива
+
+            for (i = 0; i < len - 1; i += 1) {
+                result += response[i] + " * ";
+            }
+
+            result += response[len - 1];
+        } else {
+
+            // иначе простое число
+
+            result += " - простое число";
+            p.className += " error";
         }
-
-        result += response[len - 1];
     } else {
 
-        // если это простое число
+        // иначе просто выводим результат(ошибку)
 
-        result += "простое число";
+        result += " - " + response;
         p.className += " error";
     }
 
@@ -39,7 +54,6 @@ function showResult(response, number) {
 
 function sendValue(numberField) {
     "use strict";
-
     // cоздаём новый объект XMLHttpRequest и набор данных
 
     var xhr = new XMLHttpRequest(),
@@ -57,21 +71,15 @@ function sendValue(numberField) {
     // событие на успешную загрузку
 
     xhr.onload = function (e) {
-        // запрос успешно выполнился
-
-        if (e.target.status === 200) {
-            showResult(e.target.response.result, value);
-        } else {
-            // запрос выполнился с ошибкой
-
-            alert(e.target.response.result);
-        }
+        showResult(e.target.response.result, value);
     };
 
     // событие на ошибку
 
     xhr.onerror = function (e) {
-        alert(e.target.result);
+        // выводим ошибку
+
+        alert(e.target.response);
     };
 
     // открываем соединение с /get_factorization/, асинхронный post запрос
@@ -85,7 +93,6 @@ function sendValue(numberField) {
 
 function setEvents() {
     "use strict";
-
     // получаем елементы DOM
 
     var numberField = document.getElementsByName("number")[0],
@@ -106,7 +113,6 @@ function setEvents() {
 
 window.onload = function () {
     "use strict";
-
     // устанавливаем события после загрузки страницы
 
     setEvents();

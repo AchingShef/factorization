@@ -40,7 +40,7 @@ def factorization():
     # получаем значение из формы
 
     number = request.form.get("number")
-    status = 500
+    status = 200
 
     # пытаемся преобразовать значение к целому
 
@@ -56,7 +56,6 @@ def factorization():
     elif number < 2:
         data = {"result": u"Введите натуральное число больше 1"}
     else:
-        status = 200
         result = factor(number)
         data = {"result": result}
 
