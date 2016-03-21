@@ -1,23 +1,40 @@
-function showResult(response) {
+function showResult(response, number) {
     "use strict";
 
-    var textArea = document.getElementsByName("response")[0],
-        result = textArea.value + response.number + " = ",
-        len = response.result.length,
+    // создаем абзац, в котором будет содержаться ответ
+    // и начинаем формировать ответ
+
+    var div = document.getElementsByClassName("response")[0],
+        p = document.createElement("p"),
+        result = number + " = ",
+        len = response.length,
         i;
+
+    // устанавливаем css класс элемента dom
+
+    p.className = "response";
+
+    // если это составное число с множителями
 
     if (len > 1) {
         for (i = 0; i < len - 1; i += 1) {
-            result += response.result[i] + " * ";
+            result += response[i] + " * ";
         }
 
-        result += response.result[len - 1];
+        result += response[len - 1];
     } else {
+
+        // если это простое число
+
         result += "простое число";
+        p.className += " error";
     }
 
-    result += "\n";
-    textArea.value = result;
+    p.innerHTML = result;
+
+    // добавляем абзац в div ответа
+
+    div.appendChild(p);
 }
 
 function sendValue(numberField) {
@@ -26,7 +43,8 @@ function sendValue(numberField) {
     // cоздаём новый объект XMLHttpRequest и набор данных
 
     var xhr = new XMLHttpRequest(),
-        formData = new FormData();
+        formData = new FormData(),
+        value = numberField.value;
 
     // устанавливаем тип возвращаемого значения запроса
 
@@ -34,7 +52,7 @@ function sendValue(numberField) {
 
     // добавляем ключ и значение в набор
 
-    formData.append("number", numberField.value);
+    formData.append("number", value);
 
     // событие на успешную загрузку
 
@@ -42,7 +60,7 @@ function sendValue(numberField) {
         // запрос успешно выполнился
 
         if (e.target.status === 200) {
-            showResult(e.target.response);
+            showResult(e.target.response.result, value);
         } else {
             // запрос выполнился с ошибкой
 
@@ -53,9 +71,7 @@ function sendValue(numberField) {
     // событие на ошибку
 
     xhr.onerror = function (e) {
-        if (e.target.result === null) {
-            alert(e.target.result);
-        }
+        alert(e.target.result);
     };
 
     // открываем соединение с /get_factorization/, асинхронный post запрос
