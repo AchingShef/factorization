@@ -5,10 +5,7 @@ function showResult(response, value) {
 
     var div = document.getElementsByClassName("response")[0],
         p = document.createElement("p"),
-        result = value,
-        len,
-        i;
-
+        result = value;
     // установка css-класса абзацу
 
     p.className = "response";
@@ -16,31 +13,17 @@ function showResult(response, value) {
     // если ответ - массив множителей
 
     if (Array.isArray(response) === true) {
-        len = response.length;
-
         // и несколько элементов в массиве
 
-        if (len > 1) {
-            result += " = ";
-
-            // вывод всех элементов массива, кроме последнего
-
-            for (i = 0; i < len - 1; i += 1) {
-                result += response[i] + " * ";
-            }
-
-            // вывод последнего элемента массива
-
-            result += response[len - 1];
+        if (response.length > 1) {
+            result += " = " + response.join(" * ");
         } else {
-
             // иначе простое число
 
             result += " - простое число";
             p.className += " error";
         }
     } else {
-
         // иначе просто вывод результата(ошибки)
 
         result += " - " + response;
