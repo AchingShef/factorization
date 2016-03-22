@@ -8,7 +8,3 @@ APP = Flask(__name__, template_folder="templates", static_folder="static")
 
 # импорт обработчиков событий
 from app import views
-
-
-# Configurations
-# app.config.from_object('config')
