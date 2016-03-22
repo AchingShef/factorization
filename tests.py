@@ -12,7 +12,7 @@ class FactorisationTestCase(unittest.TestCase):
         self.app = runserver.APP.test_client()
 
     def tearDown(self):
-        pass
+        runserver.APP.config["TESTING"] = False
 
     def get_factorization(self, number):
         """Метод юнит-теста"""
