@@ -16,6 +16,8 @@ function showResult(response, value) {
         // и несколько элементов в массиве
 
         if (response.length > 1) {
+            // склеиваем строку со всеми значениями массива
+
             result += " = " + response.join(" * ");
         } else {
             // иначе простое число
