@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 
-import runserver
 import unittest
 import json
+from app import APP, views
 
 
 class FactorisationTestCase(unittest.TestCase):
 
     def setUp(self):
-        runserver.APP.config["TESTING"] = True
-        self.app = runserver.APP.test_client()
+        APP.config["TESTING"] = True
+        self.app = APP.test_client()
 
     def tearDown(self):
-        runserver.APP.config["TESTING"] = False
+        APP.config["TESTING"] = False
 
     def get_factorization(self, number):
         """Метод юнит-теста"""

@@ -1,10 +1,8 @@
 # -*- coding: utf-8 -*-
 
-from flask import Flask, render_template, request, Response
+from flask import render_template, request, Response
 import json
-
-APP = Flask(__name__, template_folder="app/templates",
-            static_folder="app/static")
+from app import APP
 
 
 @APP.route("/")
@@ -62,7 +60,3 @@ def factorization():
     response = Response(data, status=status, mimetype="application/json")
 
     return response
-
-
-if __name__ == "__main__":
-    APP.run(debug=True, host="0.0.0.0", threaded=True)
