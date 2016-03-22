@@ -95,8 +95,14 @@ function setEvents() {
     };
 
     field.onkeypress = function (e) {
-        if (e.keyCode === 13) {
+        // если нажата Enter
+
+        if (e.charCode === 13) {
             sendValue(field);
+        } else {
+            // валидация числового поля
+
+            return e.charCode >= 48 && e.charCode <= 57;
         }
     };
 }
