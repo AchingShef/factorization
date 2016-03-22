@@ -96,15 +96,25 @@ function setEvents() {
         sendValue(field);
     };
 
-    field.onkeypress = function (e) {
+    field.onkeydown = function (e) {
         // если нажата Enter
+        var evt = e || window.event,
+            key = evt.charCode || evt.keyCode,
+            regexp,
+            symbol;
 
-        if (e.charCode === 13) {
+        if (key === 13) {
             sendValue(field);
         } else {
             // валидация числового поля
+            symbol = String.fromCharCode(key);
+            regexp = /^\d+$/;
 
-            return e.charCode >= 48 && e.charCode <= 57;
+            if (key === 8 || symbol.match(regexp)) {
+                return true;
+            } else {
+                return false;
+            }
         }
     };
 }
