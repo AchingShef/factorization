@@ -3,8 +3,8 @@
 from flask import Flask, render_template, request, Response
 import json
 
-APP = Flask(__name__, template_folder="app/client/templates",
-            static_folder="app/client/static")
+APP = Flask(__name__, template_folder="app/templates",
+            static_folder="app/static")
 
 
 @APP.route("/")
